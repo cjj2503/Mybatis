@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间-->
+<mapper namespace="dao.StudentMapper">
+
+   <!--1、普通测试-->
+    <!--<select id="getStudent" resultType="pojo.Student">
+        select s.id,s.name,t.name
+        from mybatis.student s,mybatis.teacher t
+        where s.tid = t.id
+    </select>&ndash;&gt;-->
+
+
+   <!-- 2、测试多对一
+    （1）按照结果嵌套处理-->
+    <select id="getStudent2" resultMap="StudentTeacher2">
+        select s.id sid,s.name sname,t.name tname,t.id tid
+        from mybatis.student s,mybatis.teacher t
+        where s.tid = t.id
+    </select>
+    <!--column:数据库中实际字段的名称(别名)
+    property：实体类中的字段名-->
+    <resultMap id="StudentTeacher2" type="pojo.Student">
+        <result property="id" column="sid"/>
+        <result property="name" column="sname"/>
+        <association property="teacher" javaType="pojo.Teacher">
+            <!--映射-->
+            <result property="name" column="tname"/>
+            <result property="id" column="tid"/>
+        </association>
+    </resultMap>
+
+    <!--（2）
+  思路：
+      1.查询所有的学生信息
+      2.根据查询出来的学生的tid，寻找对应的老师-->
+    <select id="getStudent" resultMap="StudentTeacher">
+        select * from mybatis.student
+    </select>
+
+    <resultMap id="StudentTeacher" type="pojo.Student">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="tid" column="tid"/>
+        <!--  复杂的属性，我们需要单独处理
+        对象：association
+        集合：collection-->
+        <association property="teacher" column="tid" javaType="pojo.Teacher" select="getTeacher"/>
+    </resultMap>
+
+    <select id="getTeacher" resultType="pojo.Teacher">
+        select * from mybatis.teacher where id = #{id}
+    </select>
+
+
+</mapper>

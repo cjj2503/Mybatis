@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--configuration core file-->
+<configuration>
+
+    <!--如果两个文件有同一个字段，优先使用外部配置文件的！-->
+    <!--引入外部配置文件-->
+    <properties resource="db.properties">
+        <property name="username" value="root"/>
+        <property name="pwd" value="1111"/>
+    </properties>
+
+    <!--可以给实体类起别名-->
+    <!--在实体类比较少的时候，使用第一种方式。
+   如果实体类十分多，建议使用第二种。
+   第一种可以DIY别名，第二种则不行，如果非要改，需要在实体上增加注解-->
+   <typeAliases>
+       <!--第一种：alias为别名-->
+       <typeAlias type="pojo.User" alias="User" />
+       <!--第二种-->
+       <!--扫描实体类的包，它的默认别名就为这个类的类名，首字母小写！-->
+       <!--<package name="pojo"/>-->
+   </typeAliases>
+
+   <environments default="development">
+
+       <environment id="development">
+           <transactionManager type="JDBC"/>
+           <dataSource type="POOLED">
+               <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+               <property name="url" value="jdbc:mysql://localhost:3306/mybatis?useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;allowPublicKeyRetrieval=true"/>
+               <property name="username" value="root"/>
+               <property name="password" value="1111"/>
+           </dataSource>
+       </environment>
+   </environments>
+
+   <!--a Mapper.xml need regist in Mybatis core configuration file-->
+
+    <mappers>
+        <mapper resource="dao/UserMapper.xml"/>
+    </mappers>
+</configuration>

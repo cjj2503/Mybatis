@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--命名空间-->
+<mapper namespace="dao.UserMapper">
+    <!--sql
+    id:方法名
+    resultType:Sql语句执行的返回值
+    parameterType:参数类型
+    -->
+    <!--1、查询语句-->
+    <select id="getUserList" resultType="pojo.User">
+        select * from mybatis.user
+    </select>
+    <!--2、根据id值查询数据-->
+    <select id="getUserById" parameterType="int" resultType="pojo.User">
+        select * from mybatis.user where id = #{id}
+    </select>
+    <!--3、添加操作-->
+    <insert id="addUser" parameterType="pojo.User">
+        insert into mybatis.user (id, name, pwd)values (#{id}, #{name}, #{pwd});
+    </insert>
+    <!--4、更新操作-->
+    <update id="updateUser" parameterType="pojo.User">
+        update mybatis.user set name=#{name},pwd=#{pwd} where id = #{id};
+    </update>
+    <!--5、删除操作-->
+    <delete id="deleteUser" parameterType="int">
+        delete from mybatis.user where id = #{id};
+    </delete>
+    <!--6、万能Map-->
+    <!--对象中的属性，可以直接取出来  传递map的key-->
+    <insert id="addUser2" parameterType="map">
+        insert into mybatis.user (id,name,pwd) values (#{userid},#{username},#{password})
+    </insert>
+
+
+</mapper>

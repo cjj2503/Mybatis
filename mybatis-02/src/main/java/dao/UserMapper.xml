@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间-->
+<mapper namespace="dao.UserMapper">
+    <!--sql
+    id:方法名
+    resultType:Sql语句执行的返回值
+    parameterType:参数类型
+    -->
+    <!--1、查询语句-->
+<!--    <select id="getUserList" resultType="pojo.User">-->
+<!--        select * from mybatis.user-->
+<!--    </select>-->
+<!--    &lt;!&ndash;解决属性名和字段名不一致的问题&ndash;&gt;-->
+<!--    &lt;!&ndash;1、使用数据库语句，起别名as&ndash;&gt;-->
+<!--    <select id="getUserById" parameterType="int" resultType="user">-->
+<!--        select id,name,pwd as password from mybatis.user where id = #{id}-->
+<!--    </select>-->
+    <!--2、结果集映射-->
+    <resultMap id="UserMap" type="pojo.User">
+        <!--column：数据库中的字段
+            property：实体类中的属性-->
+        <result column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="pwd" property="password" />
+    </resultMap>
+
+    <select id="getUserById" parameterType="int" resultMap="UserMap">
+        select * from mybatis.user where id = #{id}
+    </select>
+
+
+
+</mapper>
